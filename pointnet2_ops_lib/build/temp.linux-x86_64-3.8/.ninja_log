@@ -1,0 +1,10 @@
+# ninja log v5
+0	12643	1649058470830771962	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/ball_query.o	63d26e7e47cd3aa8
+2	12705	1649058470894771610	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/interpolate.o	6a4cda23c330da6f
+0	13116	1649058471306769340	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/sampling.o	5e8b2839a1fbba74
+1	13224	1649058471414768745	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/group_points.o	897881a48e6e8660
+1	14261	1649058472450763038	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/bindings.o	d2a9d4cd35f34137
+2	28380	1649058486550685196	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/interpolate_gpu.o	ef688c0ff27076d7
+1	28680	1649058486850683537	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/ball_query_gpu.o	f20f2ffa87ecf1d8
+1	29141	1649058487314680970	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/group_points_gpu.o	b5eff5f13f29cee2
+2	30606	1649058488782672845	/home-gxu/ly21/Pointr/pointnet2_ops_lib/build/temp.linux-x86_64-3.8/pointnet2_ops/_ext-src/src/sampling_gpu.o	b5a35df8a25ff2be
