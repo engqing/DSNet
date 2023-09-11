@@ -1,2 +1,2 @@
 # DSNet
-point cloud completion
+Dual-scale Point Cloud Completion Network Based on High-frequency Feature Fusion
