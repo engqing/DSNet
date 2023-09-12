@@ -53,9 +53,8 @@ def run_net(args, config, train_writer=None, val_writer=None):
 
     dataset_name = config.dataset.train._base_.NAME
     if dataset_name == 'PCN':
-        print_log('在PCN上做实验', logger=logger)
-        resume_file1 = '/home-gxu/ly21/DSNet/pretrained/GRNet-PCN.pth'
-        # resume_file1 = ''
+        print_log('Experiment on PCN', logger=logger)
+        resume_file1 = ''
         if resume_file1 != '':
             if os.path.isfile(resume_file1):
                 print("=> loading checkpoint '{}'".format(resume_file1))
@@ -69,14 +68,13 @@ def run_net(args, config, train_writer=None, val_writer=None):
                 # optimizer_AE.load_state_dict(checkpoint['optim'])
                 for parma in base_model.module.grnet_.parameters():
                     parma.requires_grad = False
-                print('模型结构:')
-                for param_tensor in base_model.state_dict():  # 打印 key value字典
+                print('Model structure:')
+                for param_tensor in base_model.state_dict():
                     print(param_tensor, '\t', base_model.state_dict()[param_tensor].size())
 
     elif dataset_name == 'ShapeNet':
-        print_log('在ShapeNet上做实验', logger=logger)
-        resume_file2 = '/home-gxu/ly21/DSNet/pretrained/GRNet-ShapeNet55.pth'
-        # resume_file2 = ''
+        print_log('Experiment on ShapeNet', logger=logger)
+        resume_file2 = ''
         if resume_file2 != '':
             if os.path.isfile(resume_file2):
                 print("=> loading checkpoint '{}'".format(resume_file2))
@@ -91,7 +89,7 @@ def run_net(args, config, train_writer=None, val_writer=None):
                 # optimizer_AE.load_state_dict(checkpoint['optim'])
                 for parma in base_model.module.grnet_.parameters():
                     parma.requires_grad = False
-                print('模型结构:')
+                print('Model structure:')
                 for param_tensor in base_model.state_dict():
                     print(param_tensor, '\t', base_model.state_dict()[param_tensor].size())
 
@@ -390,7 +388,7 @@ def test(base_model, test_dataloader, ChamferDisL1, ChamferDisL2, args, config, 
 
                 ret, f_p, f_v, f_pv = base_model(partial)
 
-                ##### (vis_fea)特征
+                ##### (vis_fea) feature
                 # if idx+1 != 8 or 12 or 23 or 24 or 39 or 46 or 60 or 65 or 81 or 114 or 127 or 156 or 163 or 171 or 174 or 181 or 187 or 207 or 210 or 221 or 229 or 248 or 280 \
                 #         or 294 or 312 or 358 or 428 or 453 or 458 or 473 or 528 or 545 or 548 or 550 or 614 or 631 or 668 or 671 or 696 or 708 or 729 or 747 or 751 or 761 \
                 #         or 780 or 804 or 805 or 812 or 836 or 845 or 851 or 867 or 876 or 886 or 893 or 900 or 903 or 906 or 920 or 926 or 956 or 958 or 967 or 974 or 997 \
@@ -424,45 +422,40 @@ def test(base_model, test_dataloader, ChamferDisL1, ChamferDisL2, args, config, 
                 # if test_writer is not None and idx % 1 == 0:
                 index = idx + 1
                 if index % 1000 == 0:
-                    vis_path = os.path.join(args.experiment_path, '可视化')
+                    vis_path = os.path.join(args.experiment_path, 'visualization')
                     if not os.path.exists(vis_path):
                         os.mkdir(vis_path)
-                        print('成功创建可视化文件夹')
 
-                    input_path = os.path.join(vis_path, '输入点云')
+                    input_path = os.path.join(vis_path, 'Input point cloud')
                     if not os.path.exists(input_path):
                         os.mkdir(input_path)
-                        print('成功创建输入点云文件夹')
                     input_pc = partial.squeeze().detach().cpu().numpy()
                     input_pc = misc.get_ptcloud_img(input_pc)
                     # test_writer.add_image('Model%02d/Input' % idx, input_pc, epoch_idx, dataformats='HWC')
                     input_pc = Image.fromarray(input_pc)
                     input_pc.save(os.path.join(input_path, 'Model %02d.jpg' % index))
 
-                    sparse_path = os.path.join(vis_path, '稀疏点云')
+                    sparse_path = os.path.join(vis_path, 'Sparse point cloud')
                     if not os.path.exists(sparse_path):
                         os.mkdir(sparse_path)
-                        print('成功创建稀疏点云文件夹')
                     sparse = coarse_points.squeeze().cpu().numpy()
                     sparse_img = misc.get_ptcloud_img(sparse)
                     # test_writer.add_image('Model%02d/Sparse' % idx, sparse_img, epoch_idx, dataformats='HWC')
                     sparse_img = Image.fromarray(sparse_img)
                     sparse_img.save(os.path.join(sparse_path, 'Model %02d.jpg' % index))
 
-                    dense_path = os.path.join(vis_path, '补全点云')
+                    dense_path = os.path.join(vis_path, 'Completed point cloud')
                     if not os.path.exists(dense_path):
                         os.mkdir(dense_path)
-                        print('成功创建补全点云文件夹')
                     dense = dense_points.squeeze().cpu().numpy()
                     dense_img = misc.get_ptcloud_img(dense)
                     # test_writer.add_image('Model%02d/Dense' % idx, dense_img, epoch_idx, dataformats='HWC')
                     dense_img = Image.fromarray(dense_img)
                     dense_img.save(os.path.join(dense_path, 'Model %02d.jpg' % index))
 
-                    gt_path = os.path.join(vis_path, '真实点云')
+                    gt_path = os.path.join(vis_path, 'Real point cloud')
                     if not os.path.exists(gt_path):
                         os.mkdir(gt_path)
-                        print('成功创建真实点云文件夹')
                     gt_ptcloud = gt.squeeze().cpu().numpy()
                     gt_ptcloud_img = misc.get_ptcloud_img(gt_ptcloud)
                     # test_writer.add_image('Model%02d/DenseGT' % idx, gt_ptcloud_img, epoch_idx, dataformats='HWC')
@@ -504,45 +497,40 @@ def test(base_model, test_dataloader, ChamferDisL1, ChamferDisL2, args, config, 
 
                     index_1 = idx + 1
                     if index_1 % 1 == 0 and 20000 < index_1 <= 105180:
-                        vis_path = os.path.join(args.experiment_path, '可视化')
+                        vis_path = os.path.join(args.experiment_path, 'visualization')
                         if not os.path.exists(vis_path):
                             os.mkdir(vis_path)
-                            print('成功创建可视化文件夹')
 
-                        input_path = os.path.join(vis_path, '输入点云')
+                        input_path = os.path.join(vis_path, 'Input')
                         if not os.path.exists(input_path):
                             os.mkdir(input_path)
-                            print('成功创建输入点云文件夹')
                         input_pc = partial.squeeze().detach().cpu().numpy()
                         input_pc = misc.get_ptcloud_img(input_pc)
                         # test_writer.add_image('Model%02d/Input' % idx, input_pc, epoch_idx, dataformats='HWC')
                         input_pc = Image.fromarray(input_pc)
                         input_pc.save(os.path.join(input_path, 'Model %02d.jpg' % index_1))
 
-                        # sparse_path = os.path.join(vis_path, '稀疏点云')
+                        # sparse_path = os.path.join(vis_path, 'Sparse')
                         # if not os.path.exists(sparse_path):
                         #     os.mkdir(sparse_path)
-                        #     print('成功创建稀疏点云文件夹')
                         # sparse = coarse_points.squeeze().cpu().numpy()
                         # sparse_img = misc.get_ptcloud_img(sparse)
                         # # test_writer.add_image('Model%02d/Sparse' % idx, sparse_img, epoch_idx, dataformats='HWC')
                         # sparse_img = Image.fromarray(sparse_img)
                         # sparse_img.save(os.path.join(sparse_path, 'Model %02d.jpg' % index_1))
 
-                        dense_path = os.path.join(vis_path, '补全点云')
+                        dense_path = os.path.join(vis_path, 'Completed')
                         if not os.path.exists(dense_path):
                             os.mkdir(dense_path)
-                            print('成功创建补全点云文件夹')
                         dense = dense_points.squeeze().cpu().numpy()
                         dense_img = misc.get_ptcloud_img(dense)
                         # test_writer.add_image('Model%02d/Dense' % idx, dense_img, epoch_idx, dataformats='HWC')
                         dense_img = Image.fromarray(dense_img)
                         dense_img.save(os.path.join(dense_path, 'Model %02d.jpg' % index_1))
 
-                        gt_path = os.path.join(vis_path, '真实点云')
+                        gt_path = os.path.join(vis_path, 'Real')
                         if not os.path.exists(gt_path):
                             os.mkdir(gt_path)
-                            print('成功创建真实点云文件夹')
                         gt_ptcloud = gt.squeeze().cpu().numpy()
                         gt_ptcloud_img = misc.get_ptcloud_img(gt_ptcloud)
                         # test_writer.add_image('Model%02d/DenseGT' % idx, gt_ptcloud_img, epoch_idx, dataformats='HWC')
@@ -570,28 +558,22 @@ def test(base_model, test_dataloader, ChamferDisL1, ChamferDisL2, args, config, 
                           (idx + 1, n_samples, taxonomy_id, model_id, ['%.4f' % l for l in test_losses.val()],
                            ['%.4f' % m for m in _metrics]), logger=logger)
 
-        # 创建一个形状为 (1200,) 的初始数组
         labels = np.zeros(1200)
 
-        # 每个类别的样本数
         samples_per_category = 150
 
-        # 遍历类别
         for category in range(1, 9):
             start_index = (category - 1) * samples_per_category
             end_index = category * samples_per_category
             labels[start_index:end_index] = category
 
-        # 使用T-SNE进行降维
         tsne = TSNE(n_components=3, random_state=42, learning_rate=100, n_iter=2000)
         embedded_features = tsne.fit_transform(output_matrix)
 
-        # 定义颜色映射
-        cmap = plt.cm.get_cmap('jet')  # 使用 'tab10' 颜色映射，可根据需要更换
+        cmap = plt.cm.get_cmap('jet')
 
-        # 绘制可视化结果
         # plt.scatter(embedded_features[:, 0], embedded_features[:, 1], s=5)
-        # 可视化结果
+
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
 
@@ -607,17 +589,14 @@ def test(base_model, test_dataloader, ChamferDisL1, ChamferDisL2, args, config, 
 
         sc = ax.scatter(a, b, c, s=5, c=labels[mask], cmap=cmap)
 
-        # 添加颜色条
         cbar = plt.colorbar(sc, pad=0.15, shrink=0.6)
 
-        # 设置颜色条刻度值和对应的类别标签
         cbar.set_ticks(np.arange(1, 9))
         cbar.set_ticklabels(['airplane', 'cabinet', 'car', 'chair', 'lamp', 'sofa', 'table', 'watercraft'])
 
-        # 调整颜色条刻度标签的字体大小
         cbar.ax.set_yticklabels(cbar.ax.get_yticklabels(), fontsize=8)
 
-        ##### (vis_fea)添加标题
+        ##### (vis_fea)
         # plt.title("Point feature", fontsize=10)
         # plt.title("Voxel feature", fontsize=10)
         plt.title("Fusion feature", fontsize=10)
@@ -626,7 +605,7 @@ def test(base_model, test_dataloader, ChamferDisL1, ChamferDisL2, args, config, 
         if not os.path.exists(vis_feature_path):
             os.mkdir(vis_feature_path)
 
-        ##### (vis_fea)保存可视化图片
+        ##### (vis_fea)
         # plt.savefig(os.path.join(vis_feature_path, 'tsne_visualization_f_p.png'))
         # plt.savefig(os.path.join(vis_feature_path, 'tsne_visualization_f_v.png'))
         plt.savefig(os.path.join(vis_feature_path, 'tsne_visualization_f_pv.png'))
