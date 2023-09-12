@@ -133,7 +133,7 @@ class Block(nn.Module):
         return x
 
 
-class PCTransformer(nn.Module):
+class Point(nn.Module):
     def __init__(self, in_chans=3, embed_dim=768, depth=[6, 6], num_heads=6, mlp_ratio=2., qkv_bias=False,
                  qk_scale=None, drop_rate=0., attn_drop_rate=0.,
                  num_query=224, knn_layer=-1):

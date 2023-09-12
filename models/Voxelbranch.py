@@ -30,9 +30,9 @@ class RandomPointSampling(torch.nn.Module):
         return torch.cat(ptclouds, dim=0).contiguous()
 
 
-class GRNet(torch.nn.Module):
+class Voxel(torch.nn.Module):
     def __init__(self):
-        super(GRNet, self).__init__()
+        super(Voxel, self).__init__()
         self.gridding = Gridding(scale=64)
         self.conv1 = torch.nn.Sequential(
             torch.nn.Conv3d(1, 32, kernel_size=4, padding=2),

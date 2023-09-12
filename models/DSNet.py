@@ -8,10 +8,10 @@ from extensions.gridding import Gridding, GriddingReverse
 from extensions.cubic_feature_sampling import CubicFeatureSampling
 # from paconv_util.PAConv_util import get_scorenet_input, knn
 from DGCNN_PAConv import PAConv
-from .gaiGRNet import GRNet
+from .Voxelbranch import Voxel
 from .build import MODELS
 from extensions.chamfer_dist import ChamferDistanceL1
-from .gaiTransformer import PCTransformer
+from .Pointbranch import Point
 
 
 def fps(pc, num):
@@ -277,9 +277,9 @@ class DSNet(torch.nn.Module):
         self.trans_dim = config.trans_dim
         self.knn_layer = config.knn_layer
         self.num_query = config.num_query
-        self.point_encoder = PCTransformer(in_chans=3, embed_dim=self.trans_dim, depth=[6, 8], drop_rate=0.,
+        self.point_encoder = Point(in_chans=3, embed_dim=self.trans_dim, depth=[6, 8], drop_rate=0.,
                                            num_query=self.num_query, knn_layer=self.knn_layer)
-        self.grnet_ = GRNet()
+        self.grnet_ = Voxel()
         self.conv_1 = nn.Sequential(
             nn.Conv1d(1024, 2048, 1),
             nn.BatchNorm1d(2048),
